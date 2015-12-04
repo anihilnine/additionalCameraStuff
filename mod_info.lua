@@ -1,0 +1,16 @@
+name = "Additional Camera Stuff"
+version = 1
+copyright = "Do whatever you want with it, feel free to add stuff, copy, edit, delete code or publish own versions"
+description = "Hotkeys for camera actions"
+author = "Myxir"
+uid = "057ac1c6-9a94-11e5-8994-feff819cdc9f"
+icon = "/mods/additionalCameraHotkeys/icon.png"
+selectable = true
+enabled = true
+exclusive = false
+ui_only = true
+requires = {}
+requiresNames = {}
+conflicts = {}
+before = {}
+after = {}
