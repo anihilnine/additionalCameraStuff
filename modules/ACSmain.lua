@@ -17,7 +17,6 @@ function initCameraHotkeys()
 	KeyMapper.SetUserKeyAction("Jump to previous camera position", {action = "UI_Lua import('"..modpath.."modules/ACScamera.lua').jumpToPrevPosition()", category = orderCategory, order = 100,})
 
 	for i = 1, amountOfCameraPoints do
-		LOG('adding for '..i)
 		KeyMapper.SetUserKeyAction('Set camera position '..i, {action = "UI_Lua import('"..modpath.."modules/ACScamera.lua').setCameraPosition("..i..")", category = orderCategory, order = 100+2*i,})
 		KeyMapper.SetUserKeyAction('Go to camera position '..i, {action = "UI_Lua import('"..modpath.."modules/ACScamera.lua').restoreCameraPosition("..i..")", category = orderCategory, order = 101+2*i,})
 	end
