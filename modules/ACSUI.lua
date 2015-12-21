@@ -1,5 +1,6 @@
 local modpath = "/mods/additionalCameraStuff/"
 local camera = import(modpath..'modules/ACScamera.lua')
+local prefsUI = import(modpath..'modules/ACSprefsUI.lua')
 
 local UIUtil = import('/lua/ui/uiutil.lua')
 local LayoutHelpers = import('/lua/maui/layouthelpers.lua')
@@ -80,6 +81,19 @@ function createUI(mapGroup)
     
     controls.container:DisableHitTest(true)
     
+    controls.settingsButton = Button(controls.container,
+        UIUtil.SkinnableFile('/game/menu-btns/config_btn_over.dds'),
+        UIUtil.SkinnableFile('/game/menu-btns/config_btn_down.dds'),
+        UIUtil.SkinnableFile('/game/menu-btns/config_btn_over.dds'),
+        UIUtil.SkinnableFile('/game/menu-btns/config_btn_dis.dds'))    
+    controls.settingsButton.OnClick = function(self)
+        prefsUI.createPrefsUi()
+    end
+    Tooltip.AddButtonTooltip(controls.settingsButton, {
+        text = "Open mod settings",
+        body = "",
+    })
+
 
     --controls.collapseArrow:Hide()
     controls.container:Hide()
@@ -132,6 +146,17 @@ function SetLayout()
         UIUtil.UIFile('/game/tab-r-btn/tab-open_btn_over.dds'),
         UIUtil.UIFile('/game/tab-r-btn/tab-close_btn_dis.dds'),
         UIUtil.UIFile('/game/tab-r-btn/tab-open_btn_dis.dds'))
+
+    LayoutHelpers.AtTopIn(controls.settingsButton, controls.container, 50)
+    LayoutHelpers.AtRightIn(controls.settingsButton, controls.parent, -5)
+
+    controls.settingsButton:SetTexture(UIUtil.SkinnableFile('/game/menu-btns/config_btn_over.dds'))
+    controls.settingsButton.Depth:Set(function() return controls.bgTop.Depth() + 2 end)
+    controls.settingsButton:SetNewTextures(
+        UIUtil.SkinnableFile('/game/menu-btns/config_btn_over.dds'),
+        UIUtil.SkinnableFile('/game/menu-btns/config_btn_down.dds'),
+        UIUtil.SkinnableFile('/game/menu-btns/config_btn_over.dds'),
+        UIUtil.SkinnableFile('/game/menu-btns/config_btn_dis.dds'))
 end
 
 

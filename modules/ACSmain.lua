@@ -1,17 +1,23 @@
 local modpath = "/mods/additionalCameraStuff/"
 
-
 local amountOfCameraPoints = 5
 local orderCategory = "Mod: Additional Camera Stuff"
 
 
 function init()
-	initCameraHotkeys()
+	initPrefs()
+	initCamera()
 	initUI()
 end
 
 
-function initCameraHotkeys()
+function initPrefs()
+	import(modpath..'modules/ACSprefs.lua').init()
+end
+
+
+function initCamera()
+	import(modpath..'modules/ACScamera.lua').init()
 	local KeyMapper = import('/lua/keymap/keymapper.lua')
 
 	KeyMapper.SetUserKeyAction("Jump to previous camera position", {action = "UI_Lua import('"..modpath.."modules/ACScamera.lua').jumpToPrevPosition()", category = orderCategory, order = 100,})

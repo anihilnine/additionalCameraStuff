@@ -1,3 +1,6 @@
+local modpath = "/mods/additionalCameraStuff/"
+local prefs = nil
+
 local positionChangeObserver = {}
 local cameraPositions = {}
 
@@ -6,10 +9,28 @@ local insertAt = 1
 local size = 2
 local cur = 1
 
+local isUseFixedCameraHeight = false
+local fixedCameraHeight = 0
+
+
+function init()
+	prefs = import(modpath..'modules/ACSprefs.lua')
+	isUseFixedCameraHeight = prefs.getPreferences().Camera.isSavePositionAtHeight
+	fixedCameraHeight = prefs.getPreferences().Camera.savePositionsAtHeight
+
+	prefs.addPreferenceChangeListener(function()
+        local savedPrefs = prefs.getPreferences()
+		isUseFixedCameraHeight = prefs.getPreferences().Camera.isSavePositionAtHeight
+		fixedCameraHeight = prefs.getPreferences().Camera.savePositionsAtHeight
+    end)
+end
 
 -- triggered by hotkey
 function setCameraPosition(i)
 	cameraPositions[i] = GetCamera('WorldCamera'):SaveSettings()
+	if isUseFixedCameraHeight then
+		cameraPositions[i].Zoom = fixedCameraHeight
+	end
 	onPositionsChange()
 end
 
@@ -68,4 +89,9 @@ function onPositionsChange()
 	for i, f in positionChangeObserver do
 		f(cameraPositions)
 	end
+end
+
+
+function onSettingsSliderChanges(value)
+	GetCamera('WorldCamera'):SetZoom(value, 0) 
 end

@@ -1,9 +1,9 @@
 name = "Additional Camera Stuff"
-version = 1
+version = 2
 copyright = "Do whatever you want with it, feel free to add stuff, copy, edit, delete code or publish own versions"
 description = "Hotkeys for camera actions"
 author = "Myxir"
-uid = "057ac1c6-9a94-11e5-8994-feff819cdc9f"
+uid = "96a4df6a-a7c8-11e5-bf7f-feff819cdc9f"
 icon = "/mods/additionalCameraStuff/icon.png"
 selectable = true
 enabled = true
