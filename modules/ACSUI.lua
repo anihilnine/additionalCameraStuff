@@ -94,7 +94,6 @@ function createUI(mapGroup)
         body = "",
     })
 
-
     --controls.collapseArrow:Hide()
     controls.container:Hide()
     SetLayout()

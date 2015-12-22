@@ -113,7 +113,6 @@ function createOptions(parent, posY)
 				elseif setting.type == "number" then
 					createSettingsSliderWithText(uiPanel.main, curPrefs, curX, curY, setting.name, uiPanel.main.Width() * 0.9, setting.min, setting.max, setting.valMult, {group.name, setting.key}, setting)
 					curY = curY + 2.5* (uiPanelSettings.options.height + uiPanelSettings.options.distance)
-					--createSettingsSliderWithText(parent, prefs, posX, posY, text, size, minVal, maxVal, valMult, args)
 				else
 					LOG("Unknown settings type: " .. setting.type)
 				end

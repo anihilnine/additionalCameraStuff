@@ -1,10 +1,5 @@
 function containsKey(t, key)
-    for name, _ in t do
-        if name == key then
-            return true
-        end
-    end
-    return false
+    return (t[key] ~= nil)
 end
 
 function containsValue(t, value)
