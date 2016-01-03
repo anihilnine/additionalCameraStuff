@@ -6,6 +6,7 @@ local Prefs = import('/lua/user/prefs.lua')
 
 local acs_modpath = "/mods/additionalCameraStuff/"
 local prefs = import(acs_modpath..'modules/ACSprefs.lua')
+local prefsUI = import(acs_modpath..'modules/ACSprefsUI.lua')
 
 local isMinimapZoom = false
 
@@ -14,22 +15,20 @@ function CreateMinimap(parent)
     oldCreateMinimap(parent)
     controls.miniMap:SetAllowZoom(isMinimapZoom)
 
-    controls.displayGroup.lockZoomButton = Button(controls.displayGroup.TitleGroup,
+    controls.displayGroup.prefsButton = Button(controls.displayGroup.TitleGroup,
         UIUtil.SkinnableFile('/game/menu-btns/config_btn_up.dds'),
         UIUtil.SkinnableFile('/game/menu-btns/config_btn_down.dds'),
         UIUtil.SkinnableFile('/game/menu-btns/config_btn_over.dds'),
         UIUtil.SkinnableFile('/game/menu-btns/config_btn_dis.dds'))
-    LayoutHelpers.LeftOf(controls.displayGroup.lockZoomButton, controls.displayGroup.resetBtn)
+    LayoutHelpers.LeftOf(controls.displayGroup.prefsButton, controls.displayGroup.resetBtn)
 
-    controls.displayGroup.lockZoomButton.OnClick = function(self)
-        local savedPrefs = prefs.getPreferences()
-        savedPrefs.Minimap.isZoomEnabled = not savedPrefs.Minimap.isZoomEnabled
-        prefs.saveModifiedPrefs(savedPrefs)
+    controls.displayGroup.prefsButton.OnClick = function(self)
+        prefsUI.createPrefsUi()
     end
 
-    Tooltip.AddButtonTooltip(controls.displayGroup.lockZoomButton, {
-        text = "Minimap Zoom",
-        body = "Enables/Disables zooming for the minimap",
+    Tooltip.AddButtonTooltip(controls.displayGroup.prefsButton, {
+        text = "ACS Preferences",
+        body = "opens the Additional Camera Stuff preferences",
     })
 
     prefs.addPreferenceChangeListener(function()

@@ -94,7 +94,7 @@ function createUI(mapGroup)
         body = "",
     })
 
-    --controls.collapseArrow:Hide()
+    controls.collapseArrow:Hide()
     controls.container:Hide()
     SetLayout()
 end
@@ -183,6 +183,6 @@ function LayoutGroups()
     else
         controls.container.Height:Set(20)
         controls.container:Hide()
-        --controls.collapseArrow:Hide()
+        controls.collapseArrow:Hide()
     end
 end
