@@ -1,9 +1,9 @@
 name = "Additional Camera Stuff"
-version = 2
+version = 3
 copyright = "Do whatever you want with it, feel free to add stuff, copy, edit, delete code or publish own versions"
-description = "Hotkeys for camera actions"
+description = "Multiple things regarding worldview, minimap and camera actions."
 author = "Myxir"
-uid = "96a4df6a-a7c8-11e5-bf7f-feff819cdc9f"
+uid = "2fe5f0e6-b481-11e5-9f22-ba0be0483c18"
 icon = "/mods/additionalCameraStuff/icon.png"
 selectable = true
 enabled = true

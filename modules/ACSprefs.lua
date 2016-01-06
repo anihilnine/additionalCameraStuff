@@ -16,6 +16,9 @@ local defaults = {
 	{ name = "Minimap", settings = {
 		{ key="isZoomEnabled", type="bool", default=false, name="Zoom enabled", description="Allow scrolling on the minimap to zoom it" },
 	}},
+	{ name = "Other", settings = {
+		{ key="isPreviewBuildrange", type="bool", default=false, name="Preview buildrange", description="Shows the buildrange if the single selected unit were located at the cursor position" },
+	}},
 }
 
 
@@ -46,7 +49,6 @@ function init()
 	end
 
 	-- TODO: delete unused settings
-	savePreferences()
 end
 
 
