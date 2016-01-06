@@ -1,9 +1,9 @@
-name = "Additional Camera Stuff"
-version = 3
+name = "Additional Camera Stuff v3.1"
+version = 3.1
 copyright = "Do whatever you want with it, feel free to add stuff, copy, edit, delete code or publish own versions"
 description = "Multiple things regarding worldview, minimap and camera actions."
 author = "Myxir"
-uid = "2fe5f0e6-b481-11e5-9f22-ba0be0483c18"
+uid = "b63aaf7e-b495-11e5-9f22-ba0be0483c18"
 icon = "/mods/additionalCameraStuff/icon.png"
 selectable = true
 enabled = true

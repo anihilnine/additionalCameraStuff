@@ -29,7 +29,7 @@ function updatePreview(unit, cursor, worldview)
     end
     local bp = unit:GetBlueprint()
     ACSdata.displayedRing = Decal(GetFrame(0))
-    ACSdata.displayedRing:SetTexture('/textures/ring_orange.dds')
+    ACSdata.displayedRing:SetTexture(acs_modpath..'textures/range_ring.dds')
     if bp.Economy.MaxBuildDistance then
         ACSdata.displayedRing:SetScale({math.floor(2.03*(bp.Economy.MaxBuildDistance+2))+2, 0, math.floor(2.03*(bp.Economy.MaxBuildDistance+2))+2})
     else
@@ -61,10 +61,12 @@ WorldView = Class(oldWorldView, Control) {
     OnUpdateCursor = function(self)
         if self.isPreviewBuildrange then
             removePreview()
-            local selectedUnits = GetSelectedUnits() or {}
-            if (table.getn(selectedUnits) == 1) then
-                if (isAcceptablePreviewMode(CM.GetCommandMode())) then
-                    updatePreview(selectedUnits[1], GetCursor(), self)
+            if IsKeyDown("Shift") then
+                local selectedUnits = GetSelectedUnits() or {}
+                if (table.getn(selectedUnits) == 1) then
+                    if (isAcceptablePreviewMode(CM.GetCommandMode())) then
+                        updatePreview(selectedUnits[1], GetCursor(), self)
+                    end
                 end
             end
         end
