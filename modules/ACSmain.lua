@@ -1,5 +1,7 @@
 local modpath = "/mods/additionalCameraStuff/"
 local prefs = import(modpath..'modules/ACSprefs.lua')
+local main = import(modpath..'modules/ACSmain.lua')
+local worldView = import("/lua/ui/game/worldview.lua")
 
 local amountOfCameraPoints = 5
 local orderCategory = "Mod: Additional Camera Stuff"
@@ -38,15 +40,25 @@ end
 
 
 function initOther()
-    prefs.addPreferenceChangeListener(function()
-        local savedPrefs = prefs.getPreferences()
-        local view = import("/lua/ui/game/worldview.lua").viewLeft
-        if view then
-        	view:SetPreviewBuildrange(savedPrefs.Other.isPreviewBuildrange)
-        	view:SetPreviewKey("SHIFT")
-        	if savedPrefs.Other.isPreviewKeyCtrl then
+	worldView.addViewChangeListener(function()
+		main.updateWorldviews()
+	end)
+
+	prefs.addPreferenceChangeListener(function()
+		main.updateWorldviews()
+	end)
+end
+
+
+function updateWorldviews()
+	local savedPrefs = prefs.getPreferences()
+	for _, view in {worldView.viewLeft, worldView.viewRight} do
+		if view then
+			view:SetPreviewBuildrange(savedPrefs.Other.isPreviewBuildrange)
+			view:SetPreviewKey("SHIFT")
+			if savedPrefs.Other.isPreviewKeyCtrl then
 				view:SetPreviewKey("CONTROL")
 			end
-        end
-    end)
+		end
+	end
 end

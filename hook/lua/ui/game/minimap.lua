@@ -30,7 +30,7 @@ function CreateMinimap(parent)
 
     Tooltip.AddButtonTooltip(controls.displayGroup.prefsButton, {
         text = "ACS Preferences",
-        body = "opens the Additional Camera Stuff preferences",
+        body = "Opens the Additional Camera Stuff preferences",
     })
 
     local oldResetButtonFunction = controls.displayGroup.resetBtn.OnClick
