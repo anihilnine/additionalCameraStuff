@@ -43,6 +43,7 @@ function CreateMinimap(parent)
         local savedPrefs = prefs.getPreferences()
         controls.miniMap:SetAllowZoom(savedPrefs.Minimap.isZoomEnabled)
         controls.displayGroup._lockSize = (not savedPrefs.Minimap.isResizableAndDraggable)
+        controls.displayGroup._lockPosition = (not savedPrefs.Minimap.isResizableAndDraggable)
         isResetButtonEnabled = savedPrefs.Minimap.isResizableAndDraggable
     end)
 end
