@@ -10,6 +10,7 @@ local prefsUI = import(acs_modpath..'modules/ACSprefsUI.lua')
 
 local isMinimapZoom = false
 local isResetButtonEnabled = true
+local isCloseButtonEnabled = true
 
 local oldCreateMinimap = CreateMinimap
 function CreateMinimap(parent)
@@ -39,11 +40,19 @@ function CreateMinimap(parent)
         end
     end
 
+    local oldCloseButtonFunction = controls.displayGroup.OnClose
+    controls.displayGroup.OnClose = function(self)
+        if isCloseButtonEnabled then
+            oldCloseButtonFunction(self)
+        end
+    end
+
     prefs.addPreferenceChangeListener(function()
         local savedPrefs = prefs.getPreferences()
         controls.miniMap:SetAllowZoom(savedPrefs.Minimap.isZoomEnabled)
         controls.displayGroup._lockSize = (not savedPrefs.Minimap.isResizableAndDraggable)
         controls.displayGroup._lockPosition = (not savedPrefs.Minimap.isResizableAndDraggable)
         isResetButtonEnabled = savedPrefs.Minimap.isResizableAndDraggable
+        isCloseButtonEnabled = savedPrefs.Minimap.isClosable
     end)
 end

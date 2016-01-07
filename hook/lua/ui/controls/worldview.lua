@@ -1,5 +1,4 @@
 local acs_modpath = "/mods/additionalCameraStuff/"
-local prefs = import(acs_modpath..'modules/ACSprefs.lua')
 local CM = import('/lua/ui/game/commandmode.lua')
 local Decal = import('/lua/user/userdecal.lua').UserDecal
 

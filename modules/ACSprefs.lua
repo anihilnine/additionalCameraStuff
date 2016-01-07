@@ -14,8 +14,9 @@ local defaults = {
 		{ key="savePositionsAtHeight", type="number", default=20, name="Save position height", description="At which height the positions will ", min=100, max=500, valMult=1, execute = import(modpath..'modules/ACScamera.lua').onSettingsSliderChanges },
 	}},
 	{ name = "Minimap", settings = {
-		{ key="isZoomEnabled", type="bool", default=false, name="Zoom enabled", description="Allow scrolling on the minimap to zoom it" },
-		{ key="isResizableAndDraggable", type="bool", default=true, name="Dragging and resizing enabled", description="Disabling will block resizing or moving the minimap and hide the reset button" },
+		{ key="isZoomEnabled", type="bool", default=false, name="Zoom is enabled", description="Allow scrolling on the minimap to zoom it" },
+		{ key="isResizableAndDraggable", type="bool", default=true, name="Dragging, resizing and resetbutton are enabled", description="Disabling will block resizing or moving the minimap and hide the reset button" },
+		{ key="isClosable", type="bool", default=true, name="Closing the window is enabled", description="Disabling will block the close button" },
 	}},
 	{ name = "Other", settings = {
 		{ key="isPreviewBuildrange", type="bool", default=false, name="Preview buildrange (single unit + shift)", description="Shows the buildrange if the single selected unit were located at the cursor position" },
