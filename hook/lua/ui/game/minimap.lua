@@ -9,6 +9,7 @@ local prefs = import(acs_modpath..'modules/ACSprefs.lua')
 local prefsUI = import(acs_modpath..'modules/ACSprefsUI.lua')
 
 local isMinimapZoom = false
+local isResetButtonEnabled = true
 
 local oldCreateMinimap = CreateMinimap
 function CreateMinimap(parent)
@@ -31,9 +32,17 @@ function CreateMinimap(parent)
         body = "opens the Additional Camera Stuff preferences",
     })
 
+    local oldResetButtonFunction = controls.displayGroup.resetBtn.OnClick
+    controls.displayGroup.resetBtn.OnClick = function(modifiers)
+        if isResetButtonEnabled then
+            oldResetButtonFunction(modifiers)
+        end
+    end
+
     prefs.addPreferenceChangeListener(function()
         local savedPrefs = prefs.getPreferences()
-        isMinimapZoom = savedPrefs.Minimap.isZoomEnabled
-        controls.miniMap:SetAllowZoom(isMinimapZoom)
+        controls.miniMap:SetAllowZoom(savedPrefs.Minimap.isZoomEnabled)
+        controls.displayGroup._lockSize = (not savedPrefs.Minimap.isResizableAndDraggable)
+        isResetButtonEnabled = savedPrefs.Minimap.isResizableAndDraggable
     end)
 end

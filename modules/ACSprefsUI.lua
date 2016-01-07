@@ -10,7 +10,7 @@ local Tooltip = import('/lua/ui/game/tooltip.lua')
 
 local ACSprefs = import(modpath..'modules/ACSprefs.lua')
 local uiPanelSettings = {
-	height = 400,
+	height = 450,
 	width = 400,
 	textSize = {
 		headline = 20,

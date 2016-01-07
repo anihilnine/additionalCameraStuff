@@ -50,6 +50,7 @@ WorldView = Class(oldWorldView, Control) {
 
     isZoom = true,
     isPreviewBuildrange = false,
+    previewKey = "SHIFT",
 
     HandleEvent = function(self, event)
         if (not self.isZoom) and (event.Type == 'WheelRotation') then
@@ -61,7 +62,7 @@ WorldView = Class(oldWorldView, Control) {
     OnUpdateCursor = function(self)
         if self.isPreviewBuildrange then
             removePreview()
-            if IsKeyDown("Shift") then
+            if IsKeyDown(self.previewKey) then
                 local selectedUnits = GetSelectedUnits() or {}
                 if (table.getn(selectedUnits) == 1) then
                     if (isAcceptablePreviewMode(CM.GetCommandMode())) then
@@ -80,5 +81,9 @@ WorldView = Class(oldWorldView, Control) {
     SetPreviewBuildrange = function(self, bool)
         removePreview()
         self.isPreviewBuildrange = bool
+    end,
+
+    SetPreviewKey = function(self, newKey)
+        self.previewKey = newKey
     end,
 }

@@ -43,6 +43,10 @@ function initOther()
         local view = import("/lua/ui/game/worldview.lua").viewLeft
         if view then
         	view:SetPreviewBuildrange(savedPrefs.Other.isPreviewBuildrange)
+        	view:SetPreviewKey("SHIFT")
+        	if savedPrefs.Other.isPreviewKeyCtrl then
+				view:SetPreviewKey("CONTROL")
+			end
         end
     end)
 end

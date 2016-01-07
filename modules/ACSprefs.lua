@@ -15,9 +15,11 @@ local defaults = {
 	}},
 	{ name = "Minimap", settings = {
 		{ key="isZoomEnabled", type="bool", default=false, name="Zoom enabled", description="Allow scrolling on the minimap to zoom it" },
+		{ key="isResizableAndDraggable", type="bool", default=true, name="Dragging and resizing enabled", description="Disabling will block resizing or moving the minimap and hide the reset button" },
 	}},
 	{ name = "Other", settings = {
-		{ key="isPreviewBuildrange", type="bool", default=false, name="Preview buildrange", description="Shows the buildrange if the single selected unit were located at the cursor position" },
+		{ key="isPreviewBuildrange", type="bool", default=false, name="Preview buildrange (single unit + shift)", description="Shows the buildrange if the single selected unit were located at the cursor position" },
+		{ key="isPreviewKeyCtrl", type="bool", default=false, name="Preview uses ctrl instead of shift", description="" },
 	}},
 }
 
