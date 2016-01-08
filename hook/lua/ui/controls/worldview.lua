@@ -4,8 +4,13 @@ local Decal = import('/lua/user/userdecal.lua').UserDecal
 
 local ACSdata = {
     isPreviewAlive = false,
+    previews = {
+        buildrange = false,
+        attackrange = false,
+    },
     rings = {
         buildrange = {},
+        attackrange = {},
     },
 }
 
@@ -23,24 +28,30 @@ function isAcceptablePreviewMode(mode)
     return false
 end
 
-function createPreview(units)
+function createBuildrangePreview(units)
     -- buildrange
-    for _, u in EntityCategoryFilterDown(categories.ENGINEER, units or {}) do
-        local bp = u:GetBlueprint()
-        if bp.Economy.MaxBuildDistance then
-            if (not ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]) then
-                ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance] = Decal(GetFrame(0))
-                ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]:SetTexture(acs_modpath..'textures/range_ring.dds')
-                ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]:SetScale({math.floor(2.03*(bp.Economy.MaxBuildDistance+2))+2, 0, math.floor(2.03*(bp.Economy.MaxBuildDistance+2))+2})
-                ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]:SetPosition(GetMouseWorldPos())
+    units = units or {}
+    if ACSdata.previews.buildrange then
+        for _, u in EntityCategoryFilterDown(categories.ENGINEER, units) do
+            local bp = u:GetBlueprint()
+            if bp.Economy.MaxBuildDistance then
+                if (not ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]) then
+                    ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance] = Decal(GetFrame(0))
+                    ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]:SetTexture(acs_modpath..'textures/range_ring.dds')
+                    ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]:SetScale({math.floor(2.03*(bp.Economy.MaxBuildDistance+2))+2, 0, math.floor(2.03*(bp.Economy.MaxBuildDistance+2))+2})
+                    ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]:SetPosition(GetMouseWorldPos())
+                end
             end
         end
+    end
+    -- attackrange
+    if ACSdata.previews.attackrange then
     end
     ACSdata.isPreviewAlive = true
 end
 
 function createPreviewOfCurrentSelection()
-    createPreview(GetSelectedUnits() or {})
+    createBuildrangePreview(GetSelectedUnits() or {})
 end
 
 function updatePreview()
@@ -73,6 +84,7 @@ WorldView = Class(oldWorldView, Control) {
 
     isZoom = true,
     isPreviewBuildrange = false,
+    isPreviewAttackrange = false,
     previewKey = "SHIFT",
 
     HandleEvent = function(self, event)
@@ -83,7 +95,7 @@ WorldView = Class(oldWorldView, Control) {
     end,
 
     OnUpdateCursor = function(self)
-        if self.isPreviewBuildrange then
+        if (self.isPreviewBuildrange or self.isPreviewAttackrange) then
             if IsKeyDown(self.previewKey) and (isAcceptablePreviewMode(CM.GetCommandMode())) then
                 updatePreview()
             else
@@ -98,10 +110,15 @@ WorldView = Class(oldWorldView, Control) {
     end,
 
     SetPreviewBuildrange = function(self, bool)
-        if (not bool) then
-            removePreview()
-        end
         self.isPreviewBuildrange = bool
+        ACSdata.previews.buildrange = bool
+        removePreview()
+    end,
+
+    SetPreviewAttackrange = function(self, bool)
+        self.isPreviewAttackrange = bool
+        ACSdata.previews.attackrange = bool
+        removePreview()
     end,
 
     SetPreviewKey = function(self, newKey)

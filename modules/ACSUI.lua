@@ -19,50 +19,50 @@ controls = {
 }
 
 function init(mapGroup, maxSize)
-	size = maxSize
-	import(modpath.."modules/ACScamera.lua").addPositionChangeObserver(import(modpath.."modules/ACSUI.lua").onCameraPositionsChanged)
-	createUI(mapGroup)
+    size = maxSize
+    import(modpath.."modules/ACScamera.lua").addPositionChangeObserver(import(modpath.."modules/ACSUI.lua").onCameraPositionsChanged)
+    createUI(mapGroup)
 end
 
 
 function onCameraPositionsChanged(positions)
-	for i = 1, size do
-		if positions[i] == nil then
-			controls.groups[i] = nil
-		else
-			local bg = Bitmap(controls.container, UIUtil.SkinnableFile('/game/avatar/avatar-control-group_bmp.dds'))
-			local savedIndex = i
+    for i = 1, size do
+        if positions[i] == nil then
+            controls.groups[i] = nil
+        else
+            local bg = Bitmap(controls.container, UIUtil.SkinnableFile('/game/avatar/avatar-control-group_bmp.dds'))
+            local savedIndex = i
 
-			bg.icon = Bitmap(bg)
-			bg.icon.Width:Set(28)
-			bg.icon.Height:Set(20)
-			bg.icon:SetTexture(modpath..'/textures/icon.png')
-			LayoutHelpers.AtCenterIn(bg.icon, bg, 0, -4)
+            bg.icon = Bitmap(bg)
+            bg.icon.Width:Set(28)
+            bg.icon.Height:Set(20)
+            bg.icon:SetTexture(modpath..'/textures/icon.png')
+            LayoutHelpers.AtCenterIn(bg.icon, bg, 0, -4)
 
-			bg.label = UIUtil.CreateText(bg.icon, i, 18, UIUtil.bodyFont)
-			bg.label:SetColor('ffffffff')
-			bg.label:SetDropShadow(true)
-			LayoutHelpers.AtRightIn(bg.label, bg.icon)
-			LayoutHelpers.AtBottomIn(bg.label, bg, 5)
+            bg.label = UIUtil.CreateText(bg.icon, i, 18, UIUtil.bodyFont)
+            bg.label:SetColor('ffffffff')
+            bg.label:SetDropShadow(true)
+            LayoutHelpers.AtRightIn(bg.label, bg.icon)
+            LayoutHelpers.AtBottomIn(bg.label, bg, 5)
 
-			bg.icon:DisableHitTest()
-			bg.label:DisableHitTest()
+            bg.icon:DisableHitTest()
+            bg.label:DisableHitTest()
 
-			bg.HandleEvent = function(self,event)
-				if event.Type == 'ButtonPress' or event.Type == 'ButtonDClick' then
-					camera.restoreCameraPosition(savedIndex)
-				end
-			end
+            bg.HandleEvent = function(self,event)
+                if event.Type == 'ButtonPress' or event.Type == 'ButtonDClick' then
+                    camera.restoreCameraPosition(savedIndex)
+                end
+            end
 
-			controls.groups[i] = bg
-		end
-	end
-	LayoutGroups()
+            controls.groups[i] = bg
+        end
+    end
+    LayoutGroups()
 end
 
 
 function createUI(mapGroup)
-	controls.parent = GetFrame(0)
+    controls.parent = GetFrame(0)
     
     controls.container = Group(controls.parent)
     controls.container.Depth:Set(100)
@@ -75,9 +75,9 @@ function createUI(mapGroup)
         ToggleCameraGroups(checked)
     end
     Tooltip.AddCheckboxTooltip(controls.collapseArrow, {
-		text = "[Hide/Show] Camera Positions",
-		body = "Added by Additional Camera Stuff",
-	})
+        text = "[Hide/Show] Camera Positions",
+        body = "Added by Additional Camera Stuff",
+    })
     
     controls.container:DisableHitTest(true)
     
