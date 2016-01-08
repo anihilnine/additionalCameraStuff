@@ -3,8 +3,12 @@ local CM = import('/lua/ui/game/commandmode.lua')
 local Decal = import('/lua/user/userdecal.lua').UserDecal
 
 local ACSdata = {
-    displayedRing = nil,
+    isPreviewAlive = false,
+    rings = {
+        buildrange = {},
+    },
 }
+
 function isAcceptablePreviewMode(mode)
     if (not mode[2]) then
         return true
@@ -19,30 +23,50 @@ function isAcceptablePreviewMode(mode)
     return false
 end
 
-function updatePreview(unit, cursor, worldview)
-    if (not cursor) then
-        return
+function createPreview(units)
+    -- buildrange
+    for _, u in EntityCategoryFilterDown(categories.ENGINEER, units or {}) do
+        local bp = u:GetBlueprint()
+        if bp.Economy.MaxBuildDistance then
+            if (not ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]) then
+                ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance] = Decal(GetFrame(0))
+                ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]:SetTexture(acs_modpath..'textures/range_ring.dds')
+                ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]:SetScale({math.floor(2.03*(bp.Economy.MaxBuildDistance+2))+2, 0, math.floor(2.03*(bp.Economy.MaxBuildDistance+2))+2})
+                ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]:SetPosition(GetMouseWorldPos())
+            end
+        end
     end
-    if (not unit:IsInCategory("ENGINEER")) then
-        return
+    ACSdata.isPreviewAlive = true
+end
+
+function createPreviewOfCurrentSelection()
+    createPreview(GetSelectedUnits() or {})
+end
+
+function updatePreview()
+    if (not ACSdata.isPreviewAlive) then
+        createPreviewOfCurrentSelection()
     end
-    local bp = unit:GetBlueprint()
-    ACSdata.displayedRing = Decal(GetFrame(0))
-    ACSdata.displayedRing:SetTexture(acs_modpath..'textures/range_ring.dds')
-    if bp.Economy.MaxBuildDistance then
-        ACSdata.displayedRing:SetScale({math.floor(2.03*(bp.Economy.MaxBuildDistance+2))+2, 0, math.floor(2.03*(bp.Economy.MaxBuildDistance+2))+2})
-    else
-        ACSdata.displayedRing:SetScale({22, 0, 22})
+    for _, group in ACSdata.rings do
+        for __, ring in group do
+            ring:SetPosition(GetMouseWorldPos())
+        end
     end
-    ACSdata.displayedRing:SetPosition(GetMouseWorldPos())
 end
 
 function removePreview()
-    if ACSdata.displayedRing then
-        ACSdata.displayedRing:Destroy()
-        ACSdata.displayedRing = nil
+    if (not ACSdata.isPreviewAlive) then
+        return
     end
+    for n, group in ACSdata.rings do
+        for n2, ring in group do
+            ring:Destroy()
+            ACSdata.rings[n][n2] = nil
+        end
+    end
+    ACSdata.isPreviewAlive = false
 end
+
 
 local oldWorldView = WorldView 
 WorldView = Class(oldWorldView, Control) {
@@ -60,14 +84,10 @@ WorldView = Class(oldWorldView, Control) {
 
     OnUpdateCursor = function(self)
         if self.isPreviewBuildrange then
-            removePreview()
-            if IsKeyDown(self.previewKey) then
-                local selectedUnits = GetSelectedUnits() or {}
-                if (table.getn(selectedUnits) == 1) then
-                    if (isAcceptablePreviewMode(CM.GetCommandMode())) then
-                        updatePreview(selectedUnits[1], GetCursor(), self)
-                    end
-                end
+            if IsKeyDown(self.previewKey) and (isAcceptablePreviewMode(CM.GetCommandMode())) then
+                updatePreview()
+            else
+                removePreview()
             end
         end
         return oldWorldView.OnUpdateCursor(self)
@@ -78,7 +98,9 @@ WorldView = Class(oldWorldView, Control) {
     end,
 
     SetPreviewBuildrange = function(self, bool)
-        removePreview()
+        if (not bool) then
+            removePreview()
+        end
         self.isPreviewBuildrange = bool
     end,
 
