@@ -2,8 +2,8 @@ local modpath = "/mods/additionalCameraStuff/"
 local utils = import(modpath..'modules/ACSutils.lua')
 
 local Prefs = import('/lua/user/prefs.lua')
-local ASCprefsName = "ASC_settings"
-local savedPrefs = Prefs.GetFromCurrentProfile(ASCprefsName)
+local ASCprefsName = "ACS_settings"
+local savedPrefs = nil
 
 local preferenceChangeListener = {}
 
@@ -14,7 +14,7 @@ local defaults = {
         { key="savePositionsAtHeight", type="number", default=20, name="Save position height", description="At which height the positions will ", min=100, max=500, valMult=1, execute = import(modpath..'modules/ACScamera.lua').onSettingsSliderChanges },
     }},
     { name = "Minimap", settings = {
-        { key="isZoomEnabled", type="bool", default=false, name="Zoom is enabled", description="Allow scrolling on the minimap to zoom it" },
+        { key="isZoomEnabled", type="bool", default=true, name="Zoom is enabled", description="Allow scrolling on the minimap to zoom it" },
         { key="isResizableAndDraggable", type="bool", default=true, name="Dragging, resizing and resetbutton are enabled", description="Disabling will block resizing or moving the minimap and hide the reset button" },
         { key="isClosable", type="bool", default=true, name="Closing the window is enabled", description="Disabling will block the close button" },
     }},
@@ -28,6 +28,7 @@ local defaults = {
 
 function init()
     local tooltips = import('/lua/ui/help/tooltips.lua').Tooltips
+    savedPrefs = Prefs.GetFromCurrentProfile(ASCprefsName)
 
     -- create defaults
     if not savedPrefs then
@@ -40,7 +41,7 @@ function init()
         end
         for __, setting in group.settings do
             -- defaults
-            if not savedPrefs[group.name][setting.key] then
+            if (savedPrefs[group.name][setting.key] == nil) then
                 savedPrefs[group.name][setting.key] = setting.default
             end
 
@@ -53,6 +54,7 @@ function init()
     end
 
     -- TODO: delete unused settings
+    savePreferences()
 end
 
 
