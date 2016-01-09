@@ -55,6 +55,9 @@ function init()
 
     -- TODO: delete unused settings
     savePreferences()
+
+    -- had typo before, removing prefs saved in the wrong path
+    Prefs.SetToCurrentProfile("ASC_settings", nil)
 end
 
 
