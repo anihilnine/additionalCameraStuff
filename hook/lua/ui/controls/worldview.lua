@@ -34,21 +34,54 @@ function createBuildrangePreview(units)
     if ACSdata.previews.buildrange then
         for _, u in EntityCategoryFilterDown(categories.ENGINEER, units) do
             local bp = u:GetBlueprint()
-            if bp.Economy.MaxBuildDistance then
-                if (not ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]) then
-                    ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance] = Decal(GetFrame(0))
-                    ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]:SetTexture(acs_modpath..'textures/range_ring.dds')
-                    ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]:SetScale({math.floor(2.03*(bp.Economy.MaxBuildDistance+2))+2, 0, math.floor(2.03*(bp.Economy.MaxBuildDistance+2))+2})
-                    ACSdata.rings.buildrange[bp.Economy.MaxBuildDistance]:SetPosition(GetMouseWorldPos())
+            local radius = bp.Economy.MaxBuildDistance
+            if radius then
+                if (not ACSdata.rings.buildrange[radius]) then
+                    local texture = acs_modpath..'textures/range_ring.dds'
+                    createRing(ACSdata.rings.buildrange, texture, radius, 2, 2, 2, 2)
                 end
             end
         end
     end
     -- attackrange
     if ACSdata.previews.attackrange then
+        for _, u in units do
+            local bp = u:GetBlueprint()
+            if bp.Weapon ~= nil then
+                for _wIndex, w in bp.Weapon do
+                    local radius = w.MaxRadius;
+                    if not ACSdata.rings.attackrange[radius] then
+                        local texture = getTextureForWeapon(w)
+                        if texture ~= nil then 
+                            createRing(ACSdata.rings.attackrange,texture, radius, 0, 0, 0, 0)
+                        end
+                    end
+                end
+            end
+        end
     end
     ACSdata.isPreviewAlive = true
 end
+
+function getTextureForWeapon(weapon)
+    if weapon.RangeCategory == "UWRC_DirectFire" then
+        return acs_modpath..'textures/direct_ring.dds'
+    elseif weapon.RangeCategory == "UWRC_IndirectFire" then
+        return acs_modpath..'textures/indirect_ring.dds'
+    end
+    return nil -- dont display AA, torp, etc
+end
+
+function createRing(group, texture, radius, x1, x2, y1, y2)
+    if not group[radius] then
+        local ring = Decal(GetFrame(0))
+        ring:SetTexture(texture)
+        ring:SetScale({math.floor(2.03*(radius + x1) + x2), 0, math.floor(2.03*(radius + y1)) + y2})
+        ring:SetPosition(GetMouseWorldPos())
+        group[radius] = ring
+    end
+end
+
 
 function createPreviewOfCurrentSelection()
     createBuildrangePreview(GetSelectedUnits() or {})
